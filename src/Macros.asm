@@ -66,6 +66,9 @@ SerchUser macro user, compare
 		je L00
 		cmp al, 2Dh ; Codigo ASCCI [- -> Hexadecimal]
 		je Lout
+		cmp al, 24h ; Codigo ASCCI [$ -> Hexadecimal]
+		je Lout
+
 		mov compare[di], al
 
 		inc si
@@ -75,8 +78,7 @@ SerchUser macro user, compare
 
 	L00:
 		mov compare[di], 24h
-		
-		Verify compare, user
+		Verify user, compare
 
 		cmp _flagUser, 1
 		je Lout
@@ -93,8 +95,10 @@ SerchUser macro user, compare
 		je L11
 		cmp al, 2Dh ; Codigo ASCCI [- -> Hexadecimal]
 		je Lout
+		cmp al, 24h ; Codigo ASCCI [$ -> Hexadecimal]
+		je Lout
 
-		mov compare[di], al
+		;mov compare[di], al
 
 		inc si 
 		inc di
@@ -102,12 +106,10 @@ SerchUser macro user, compare
 		jmp L1
 
 	L11:
-		mov compare[di], 24h
-		; GetPrint compare
-		; GetPrint _salto
+		;mov compare[di], 24h
 		xor di, di
 		inc si
-		; inc si
+		inc si
 		jmp L0
 
 	Lout:
@@ -138,9 +140,12 @@ Verify macro user1, compare
 		cmp al, compare[si]
 		jne Lout
 		inc si
+
 		jmp L0
 
 	L1:
+		cmp compare[si], 24h
+		jne Lout
 		GetPrint _false
 		GetPrint _salto
 		mov _flagUser, 1
@@ -209,5 +214,149 @@ VerifyPass macro pass1, flag
 		pop di
 		pop si
 		pop ax
+
+endm
+
+
+
+
+login macro user, compare, flag1, pass, compare2, flag2
+	LOCAL Lout, L0, L00, L1 , L11, Le, Lerror
+	push si
+	push di
+	push ax
+	
+	xor si, si
+	xor di, di
+	xor ax, ax
+	mov flag1, 0
+	mov flag2, 0
+
+	GetOpenFile _bufferInput,_handleInput                          ; Abrir file
+	GetReadFile _handleInput,_bufferInfo,SIZEOF _bufferInfo 
+	GetCloseFile _handleInput  
+
+	xor si, si
+	xor di, di
+	xor ax, ax
+
+	L0:
+		xor al, al
+		mov al, _bufferInfo[si]		
+
+		cmp al, 2ch ; Codigo ASCCI [, -> Hexadecimal]
+		je L00
+		cmp al, 2Dh ; Codigo ASCCI [- -> Hexadecimal]
+		je Lout
+		mov compare[di], al
+
+		inc si
+		inc di
+
+		jmp L0
+
+	L00:
+		mov compare[di], 24h
+		
+		loginVerify compare, user, flag1
+
+		xor di, di
+		inc si
+		jmp L1
+
+	L1:
+		xor al, al
+		mov al, _bufferInfo[si]			; user1,
+
+		cmp al, 3bh ; Codigo ASCCI [; -> Hexadecimal]
+		je L11
+		cmp al, 2Dh ; Codigo ASCCI [- -> Hexadecimal]
+		je Lout
+
+		mov compare2[di], al
+
+		inc si 
+		inc di
+
+		jmp L1
+
+	L11:
+		mov compare2[di], 24h
+
+		xor di, di
+		inc si
+		inc si
+
+		cmp flag1, 1
+		je Le
+		jne L0
+
+		Le:
+			loginVerify compare2, pass, flag2
+			cmp flag2, 0
+			je Lerror
+
+			GetPrint _salto
+			GetPrint _false4
+			GetPrint user
+			GetPrint _salto
+			jmp Lout
+			Lerror:
+				GetPrint _salto
+				GetPrint _false3
+				GetPrint _salto
+				GetPrint _salto
+				mov flag1, 0
+				mov flag2, 0
+
+				pop ax
+				pop di
+				pop si
+
+				jmp Lf0
+
+		
+		jmp L0
+
+	Lout:
+		pop ax
+		pop di
+		pop si
+
+endm
+
+
+loginVerify macro user1, compare, flag
+	LOCAL Lout, L0, L1
+	push si
+	push di
+	push ax
+	
+	xor si, si
+	xor di, di
+	xor ax, ax
+
+	L0:
+		xor al, al
+		mov al, user1[si]
+
+		cmp al, 24h   ; $
+		je L1
+		cmp al, compare[si]
+		jne Lout
+		inc si
+		jmp L0
+
+	L1:
+		cmp  compare[si], 24h
+		jne Lout
+		mov flag, 1
+		jmp Lout
+
+
+	Lout:
+		pop ax
+		pop di
+		pop si
 
 endm

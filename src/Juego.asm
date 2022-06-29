@@ -25,6 +25,9 @@ include File.asm
 	_tk_puntocoma  	db 			               ";$"
 	_false          db 0ah,0dh,                "Error, ese Usuario ya existe.$"
 	_false1         db 0ah,0dh,                "Error, contrasena incorrecta.$"
+	_false2         db 0ah,0dh,                "Usuario Incorrecto$"
+	_false3         db 0ah,0dh,                "Contrasena Incorrecta$"
+	_false4         db 0ah,0dh,                "Bienvenido, $"
 
 	; ************** [ERRORES] **************
 	_error1         db 0ah,0dh,               "> Error al Abrir Archivo, no Existe ",   "$"
@@ -39,16 +42,15 @@ include File.asm
 	_user1         db 			              "Ingrese el Usuario: ",            	"$"	
 	_user2         db 			              "Ingrese la Contrasena: ",            "$"	
 
-	_tk_dolar     db  						  24h, "$"
-
 	_userS    db 50 dup('$'), "$"
+	_passS    db 50 dup('$'), "$"
 
 
 	; ************** [DECLARACIONES] **************
 	_flagUser    	db 0
 	_flagUPass    	db 0
-	_user           db 15 dup(' '),"$"
-	_pass           db 10 dup(' '),"$"
+	_user           db 15 dup('$'),"$"
+	_pass           db 10 dup('$'),"$"
 
 
 	; ************** [IDENTIFICADOR] **************
@@ -125,10 +127,31 @@ include File.asm
 
 
 	    Loption1:
+	    	GetPrint _salto
+			GetPrint _user1
+			GetText _user, 7
+			jmp Lf0
+
+			Lf0:
+				GetPrint _user2
+				GetText _pass, 4
+
+				login _user, _userS, _flagUser, _pass, _passS, _flagUPass 
+				cmp _flagUser, 0
+				GetPrint _salto
+				GetPrint _false2
+				GetPrint _salto
+				je Loption1
+
+				jmp Lmenu
+
+
+
 	    	jmp Lmenu
 		
 		Loption2:
-
+			; clean 
+			mov _flagUser, 0
 			GetPrint _salto
 			GetPrint _user1
 			GetText _user, 7
@@ -136,11 +159,13 @@ include File.asm
 			SerchUser _user, _userS; buscar user
 			
 			cmp _flagUser, 0
-			je lf
+			je Lf
 			jne Loption2
 			Lf:
+
+				mov _flagUPass, 0
 				GetPrint _user2
-				GetText _pass, 5
+				GetText _pass, 4
 
 				VerifyPass _pass, _flagUPass
 				cmp _flagUPass, 1
@@ -155,6 +180,9 @@ include File.asm
 				GetWriteFile _handleInput, _bufferInfo
 				GetCloseFile _handleInput 
 
+				; ; clean 
+				; mov _flagUser, 0
+				; mov _flagUPass, 0
 
 				jmp Lmenu
 
