@@ -80,6 +80,8 @@ include File.asm
 	; *********************** [VISTA DE JUEGO] ********************************
 	spv       db " ","$"
 	_Pausa    db " PAUSA $"
+	_winner    db " WINNER $"
+	_gameOver    db " GAME OVER $"
 	_PUNTEO   db "Punteo: $"
 	_PUNTEOI  dw 0
 	_PUNTEOS  db 50 dup(' '), "$" 
@@ -250,7 +252,7 @@ include File.asm
 	ydis            dw  0
 	contador        dw  0
 	;tiempo
-	inicialTime    db  0
+	inicialTime     db  0
 	minutos         db  0
 	decminutos      db  0
 	uniminutos      db  0
@@ -258,6 +260,11 @@ include File.asm
 	decsegundos     db  0
 	unisegundos     db  0
 	micsegundos     db  0
+	; vidas
+
+	VIDA    db "VIDAS $"
+	vidas        	dw  0
+	vidasS  		db 50 dup(' '), "$" 
 
 	; ================ SEGMENTO DE PROC ================
 	; **************************** [IDENTIFICADOR] **************************** 

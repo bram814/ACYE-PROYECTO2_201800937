@@ -638,25 +638,22 @@ imprimirPausa macro
     e2:
 endm
 
-
-
-; imprimirPantalla macro text, fila
-;     local e1, e2
-;     mov dl, 0
-;     e1:
-;     posicion del cursor
-;         mov ah, 02h
-;         ;dh fila
-;         mov dh, fila
-;         dl columna
-;         mov dl, dl
-;         int 10h
-;         mov dx, offset text
-;         mov ah, 09h
-;         int 21h
-;     e2:
-; endm
-
+imprimirPantalla macro buffer, columna, fila
+    local e1, e2
+    mov dl, columna
+    e1:
+    ;posicion del cursor
+        mov ah, 02h
+        ;dh fila
+        mov dh, fila
+        ;dl columna
+        mov dl, dl
+        int 10h
+        mov dx, offset buffer
+        mov ah, 09h
+        int 21h
+    e2:
+endm
 
 imprimirtiempo macro
     local e1
@@ -882,7 +879,7 @@ endm
 
 
 GetPlay macro 
-    local LCarro0, LCarro1, LCarro2, LCarro3, LCarro4, LCarro5, LCarro6, LCarro7, LCarro8, LCarro9, LCarro10, LCarro11, LCarro12, LCarro13, LCarro14, LCarro15, LCarro16, LCarro17, Lmov, Pausa, inicioj, inicioj1, tiempo1, masseg, masmin, inicioj2, WaitNotVSync, WaitNotVSync2, WaitVSync, WaitVSync2, disparar, disparar1, moverizq, moverder, finj, salir
+    local GameOver, Winner, LCarro0, LCarro1, LCarro2, LCarro3, LCarro4, LCarro5, LCarro6, LCarro7, LCarro8, LCarro9, LCarro10, LCarro11, LCarro12, LCarro13, LCarro14, LCarro15, LCarro16, LCarro17, Lmov, Pausa, inicioj, inicioj1, tiempo1, masseg, masmin, inicioj2, WaitNotVSync, WaitNotVSync2, WaitVSync, WaitVSync2, disparar, disparar1, moverizq, moverder, finj, salir
 
     xor si, si
     ;entra en modo grafico
@@ -952,6 +949,10 @@ GetPlay macro
     ; carro 17
     mov xcarro17, 235
     mov ycarro17, 30
+    ; vidas
+    mov vidas, 3
+    ; puntos 
+    mov _PUNTEOI, 0
     ;set tiempo en 0
     mov segundos, 0
     mov minutos, 0
@@ -987,9 +988,21 @@ GetPlay macro
         inc ycarro15 ; incre carro 15
         inc ycarro16 ; incre carro 16
         inc ycarro17 ; incre carro 17
+        ; punteo
         mov ax, _PUNTEOI
         Int_String _PUNTEOS
         imprimirVideo _PUNTEOS, 28
+        ; vidas
+        imprimirPantalla VIDA, 0, 4
+        mov ax, vidas
+        Int_String vidasS
+        imprimirPantalla vidasS, 0, 6
+
+
+
+        cmp _PUNTEOI, 25
+        je Winner
+
 
         Lmov:
             cmp ycarro0, 185   ; carro 0
@@ -1034,74 +1047,180 @@ GetPlay macro
             LCarro0:
                 inc _PUNTEOI
                 mov ycarro0, 23
+                mov ax, xcarro0
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro1:
                 inc _PUNTEOI
                 mov ycarro1, 23
+                mov ax, xcarro1
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro2:
                 inc _PUNTEOI
                 mov ycarro2, 23
+                mov ax, xcarro2
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro3:
                 inc _PUNTEOI
                 mov ycarro3, 23
+                mov ax, xcarro3
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro4:
                 inc _PUNTEOI
                 mov ycarro4, 23
+                mov ax, xcarro4
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro5:
                 inc _PUNTEOI
                 mov ycarro5, 23
+                mov ax, xcarro5
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro6:
                 inc _PUNTEOI
                 mov ycarro6, 23
+                mov ax, xcarro6
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro7:
                 inc _PUNTEOI
                 mov ycarro7, 23
+                mov ax, xcarro7
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro8:
                 inc _PUNTEOI
                 mov ycarro8, 23
+                mov ax, xcarro8
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
                 jmp Lmov
             LCarro9:
                 inc _PUNTEOI
                 mov ycarro9, 23
+                mov ax, xcarro9
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro10:
                 inc _PUNTEOI
                 mov ycarro10, 23
+                mov ax, xcarro10
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro11:
                 inc _PUNTEOI
                 mov ycarro11, 23
+                mov ax, xcarro11
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro12:
                 inc _PUNTEOI
                 mov ycarro12, 23
+                mov ax, xcarro12
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro13:
                 inc _PUNTEOI
                 mov ycarro13, 23
+                mov ax, xcarro13
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro14:
                 inc _PUNTEOI
                 mov ycarro14, 23
+                mov ax, xcarro14
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro15:
                 inc _PUNTEOI
                 mov ycarro15, 23
+                mov ax, xcarro15
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro16:
                 inc _PUNTEOI
                 mov ycarro16, 23
+                mov ax, xcarro16
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
             LCarro17:
                 inc _PUNTEOI
                 mov ycarro17, 23
+                mov ax, xcarro17
+                cmp xnave, ax
+                jne Lmov
+                dec vidas
+                cmp vidas, 0
+                je GameOver
                 jmp Lmov
 
 
@@ -1309,6 +1428,67 @@ GetPlay macro
         cmp al,20h          ; space
         je finj
         jmp Pausa
+
+    Winner:
+        mov inicialTime, 1
+        mov dl, 0; Column
+        mov dh, 0 ; Row
+        mov bx, 0 ; Page number, 0 for graphics modes
+        mov ah, 2h
+        int 10h
+        mov ah, 09h
+        mov al, spv 
+        mov bh, 00h
+        mov bl, 15d
+        mov cx, 40d
+        int 10h
+        mov dl, 0; Column
+        mov dh, 0 ; Row
+        mov bx, 0 ; Page number, 0 for graphics modes
+        mov ah, 2h
+        int 10h
+        imprimirnombre
+        imprimirtiempo
+        imprimirVideo _winner, 10
+        imprimirPunteo
+        imprimirVideo _PUNTEOS, 28
+        call GetChar;verifica la tecla que pulso
+        cmp al,20h          ; space
+        je finj
+        jmp Winner
+
+    GameOver:
+        mov inicialTime, 1
+        mov dl, 0; Column
+        mov dh, 0 ; Row
+        mov bx, 0 ; Page number, 0 for graphics modes
+        mov ah, 2h
+        int 10h
+        mov ah, 09h
+        mov al, spv 
+        mov bh, 00h
+        mov bl, 15d
+        mov cx, 40d
+        int 10h
+        mov dl, 0; Column
+        mov dh, 0 ; Row
+        mov bx, 0 ; Page number, 0 for graphics modes
+        mov ah, 2h
+        int 10h
+        imprimirnombre
+        imprimirtiempo
+        imprimirPantalla _gameOver, 7, 0
+        imprimirPunteo
+        imprimirVideo _PUNTEOS, 28
+        ; vidas
+        imprimirPantalla VIDA, 0, 4
+        mov ax, vidas
+        Int_String vidasS
+        imprimirPantalla vidasS, 0, 6
+        call GetChar;verifica la tecla que pulso
+        cmp al,20h          ; space
+        je finj
+        jmp GameOver
 
     finj:
         ;regresa el control de la pantalla a modo texto
