@@ -78,9 +78,11 @@ include File.asm
 
 
 	; *********************** [VISTA DE JUEGO] ********************************
-	spv db " ","$"
-	_Pausa db " PAUSA $"
-	_PUNTEO db "Punteo: $"
+	spv       db " ","$"
+	_Pausa    db " PAUSA $"
+	_PUNTEO   db "Punteo: $"
+	_PUNTEOI  dw 0
+	_PUNTEOS  db 50 dup(' '), "$" 
 	;coordenadas nave
 	xnave           dw  0
 	ynave           dw  0
