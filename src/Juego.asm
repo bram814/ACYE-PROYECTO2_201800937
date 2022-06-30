@@ -78,6 +78,8 @@ include File.asm
 
 
 	; *********************** [VISTA DE JUEGO] ********************************
+	spv db " ","$"
+	_Pausa db " PAUSA $"
 	;coordenadas nave
 	xnave           dw  0
 	ynave           dw  0
@@ -85,12 +87,12 @@ include File.asm
 	lineamarco      db  24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 
 	lineamarco1     db  24, 24
 	;nave
-	naveFila1       db  00, 00, 39, 39, 11, 11, 11, 39, 39, 00, 00
-	naveFila2       db  00, 00, 39, 39, 11, 11, 11, 39, 39, 00, 00
-	naveFila3       db  00, 00, 00, 00, 15, 15, 15, 00, 00, 00, 00
-	naveFila4       db  00, 00, 00, 00, 15, 15, 15, 00, 00, 00, 00
-	naveFila5       db  00, 00, 39, 39, 11, 11, 11, 39, 39, 00, 00
-	naveFila6       db  00, 00, 39, 39, 11, 11, 11, 39, 39, 00, 00
+	naveFila1       db  00, 00, 09, 09, 11, 11, 11, 09, 09, 00, 00
+	naveFila2       db  00, 00, 09, 09, 11, 11, 11, 09, 09, 00, 00
+	naveFila3       db  00, 00, 00, 00, 10, 10, 10, 00, 00, 00, 00
+	naveFila4       db  00, 00, 00, 00, 10, 10, 10, 00, 00, 00, 00
+	naveFila5       db  00, 00, 09, 09, 11, 11, 11, 09, 09, 00, 00
+	naveFila6       db  00, 00, 09, 09, 11, 11, 11, 09, 09, 00, 00
 	;disparo
 	disparoFila1    db  12
 	disparoFila2    db  29

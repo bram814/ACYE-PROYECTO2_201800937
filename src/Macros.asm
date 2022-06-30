@@ -363,7 +363,7 @@ endm
 
 
 
-
+; ======================================== CARRO =================================
 auxdiblinea macro vector, tam
 ;se le mueve a di en la posicion en la que se empezara a dibujar
 ;esta macro sirve para dibujar una linea
@@ -382,6 +382,8 @@ dibujarnave macro
     auxdiblinea naveFila1, 11
     add ax, 320
     auxdiblinea naveFila2, 11
+    add ax, 320
+    auxdiblinea naveFila3, 11
     add ax, 320
     auxdiblinea naveFila3, 11
     add ax, 320
@@ -457,6 +459,24 @@ imprimirnombre macro
     e2:
 endm
 
+imprimirPausa macro
+    local e1, e2
+    mov dl, 0
+    e1:
+    ;posicion del cursor
+        mov ah, 02h
+        ;dh fila
+        mov dh, 0
+        ;dl columna
+        mov dl, dl
+        int 10h
+        mov dx, offset _Pausa
+        mov ah, 09h
+        int 21h
+    e2:
+endm
+
+
 
 ; imprimirPantalla macro text, fila
 ;     local e1, e2
@@ -477,6 +497,7 @@ endm
 
 
 imprimirtiempo macro
+    local e1
     mov al, minutos
     aam
     mov decminutos, ah
@@ -699,7 +720,7 @@ endm
 
 
 GetPlay macro 
-    local inicioj, inicioj1, tiempo1, masseg, masmin, inicioj2, WaitNotVSync, WaitNotVSync2, WaitVSync, WaitVSync2, disparar, disparar1, moverizq, moverder, finj, salir
+    local Pausa, inicioj, inicioj1, tiempo1, masseg, masmin, inicioj2, WaitNotVSync, WaitNotVSync2, WaitVSync, WaitVSync2, disparar, disparar1, moverizq, moverder, finj, salir
 
     xor si, si
     ;entra en modo grafico
@@ -800,38 +821,15 @@ GetPlay macro
         pop ax
         jz inicioj
         call GetChar;verifica la tecla que pulso
+        cmp al,1bh          ; escape
+        je Pausa
         cmp al, 20h;tecla de espacio
         je finj
-        cmp al, 76h;v minuscula para disparar
-        je disparar
         cmp ax, 4b00h;flecha de la izquierda
         je moverizq
         cmp ax, 4d00h;flecha de la derecha
         je moverder
         jmp inicioj;vuelve al inicio del juevo para repintar la pantalla
-    disparar:
-        cmp ydis, 0;verifica que no haya disparo
-        je disparar1;si no hay se va a la etiqueta que dibuja el disparo
-        jmp inicioj ; si hay vuelve al inicio del juego para repintar la pantalla
-    disparar1:
-    ;guarda los valores de ax y bx en la pila
-        push ax
-        push bx
-        ;limpia los valores de ax y bx
-        xor ax, ax
-        xor bx, bx
-        mov ax, xnave
-        add ax, 5h
-        mov xdis, ax; usamos la coordenada de x de la nave y se le suman 5 para correrlo 5 pixeles
-        mov ax, ynave
-        sub ax, 5
-        mov ydis, ax; usamos la coordenada y de la nave y se le restan 5 para que este 5 pixeles arriba 
-        mov ax, ydis
-        mov bx, xdis
-        dibujardis
-        pop bx
-        pop ax
-        jmp inicioj
     moverizq:
         push ax
         mov ax, xnave; movemos la posicion de la nave al registro ax
@@ -852,12 +850,41 @@ GetPlay macro
         mov xnave, ax; se regresa a asignar el valor a la coordenada x de la nave
         pop ax
         jmp inicioj;se regresa a repintar el juego con la nueva posicion de x
+    Pausa:
+        mov dl, 0; Column
+        mov dh, 0 ; Row
+        mov bx, 0 ; Page number, 0 for graphics modes
+        mov ah, 2h
+        int 10h
+        mov ah, 09h
+        mov al, spv 
+        mov bh, 00h
+        mov bl, 15d
+        mov cx, 40d
+        int 10h
+        mov dl, 0; Column
+        mov dh, 0 ; Row
+        mov bx, 0 ; Page number, 0 for graphics modes
+        mov ah, 2h
+        int 10h
+        imprimirnombre
+        imprimirtiempo
+        imprimirPausa
+        call GetChar;verifica la tecla que pulso
+        cmp al,1bh          ; escape
+        je inicioj
+        cmp al,20h          ; space
+        je finj
+        jmp Pausa
+
     finj:
         ;regresa el control de la pantalla a modo texto
         mov ax, 3h
         int 10h
         jmp salir
     salir:
+
+
         
 
 endm
