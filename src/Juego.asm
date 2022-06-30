@@ -80,8 +80,8 @@ include File.asm
 	; *********************** [VISTA DE JUEGO] ********************************
 	spv       db " ","$"
 	_Pausa    db " PAUSA $"
-	_winner    db " WINNER $"
-	_gameOver    db " GAME OVER $"
+	_winner   db " WINNER $"
+	_gameOver db " GAME OVER $"
 	_PUNTEO   db "Punteo: $"
 	_PUNTEOI  dw 0
 	_PUNTEOS  db 50 dup(' '), "$" 
