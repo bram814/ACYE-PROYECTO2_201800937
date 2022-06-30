@@ -885,8 +885,10 @@ GetPlay macro
     mov segundos, 0
     mov minutos, 0
     mov micsegundos, 0
+    mov inicialTime, 0
+
     inicioj:
-         mov ah, 0
+        mov ah, 0
         mov al, 13h
         int 10h
      
@@ -896,9 +898,18 @@ GetPlay macro
         imprimirnombre
         imprimirtiempo 
         imprimirPunteo
+        inc ycarro0
         mov ax, _PUNTEOI
         Int_String _PUNTEOS
         imprimirVideo _PUNTEOS, 28
+        cmp ycarro0, 185
+        je LincrePoint
+        jmp inicioj1
+        LincrePoint:
+            inc _PUNTEOI
+            mov ycarro0, 23
+            inc xcarro0
+        
         ; imprimirPantalla 
     inicioj1:
         mov ax, 20 ;y
@@ -929,7 +940,6 @@ GetPlay macro
             mov micsegundos, al
 
     inicioj2:
-        inc ycarro0
         mov ax, ynave ;coordenada y de la nave
         mov bx, xnave ; coordenada x de la nave
         dibujarnave
@@ -939,6 +949,8 @@ GetPlay macro
         ;se sacan los valores de ax y bx
         pop bx
         pop ax
+        cmp inicialTime,0
+        je Pausa
         ;se llaman los metodos para la sincronizacion de la pantalla
         ;esto se usa para que no titile tanto la pantalla
         mov dx, 03dah
@@ -1001,6 +1013,7 @@ GetPlay macro
         pop ax
         jmp inicioj;se regresa a repintar el juego con la nueva posicion de x
     Pausa:
+        mov inicialTime, 1
         mov dl, 0; Column
         mov dh, 0 ; Row
         mov bx, 0 ; Page number, 0 for graphics modes
@@ -1021,6 +1034,7 @@ GetPlay macro
         imprimirtiempo
         imprimirPausa
         imprimirPunteo
+        imprimirVideo _PUNTEOS, 28
         call GetChar;verifica la tecla que pulso
         cmp al,1bh          ; escape
         je inicioj

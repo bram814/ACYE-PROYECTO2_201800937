@@ -115,6 +115,7 @@ include File.asm
 	ydis            dw  0
 	contador        dw  0
 	;tiempo
+	inicialTime    db  0
 	minutos         db  0
 	decminutos      db  0
 	uniminutos      db  0
