@@ -77,6 +77,38 @@ include File.asm
 	contadorBuffer  dw 0 ; Contador para todos los WRITE FILE, para escribir sin que se vean los $
 
 
+	; *********************** [VISTA DE JUEGO] ********************************
+	;coordenadas nave
+	xnave           dw  0
+	ynave           dw  0
+	;marco
+	lineamarco      db  24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 
+	lineamarco1     db  24, 24
+	;nave
+	naveFila1       db  00, 00, 39, 39, 11, 11, 11, 39, 39, 00, 00
+	naveFila2       db  00, 00, 39, 39, 11, 11, 11, 39, 39, 00, 00
+	naveFila3       db  00, 00, 00, 00, 15, 15, 15, 00, 00, 00, 00
+	naveFila4       db  00, 00, 00, 00, 15, 15, 15, 00, 00, 00, 00
+	naveFila5       db  00, 00, 39, 39, 11, 11, 11, 39, 39, 00, 00
+	naveFila6       db  00, 00, 39, 39, 11, 11, 11, 39, 39, 00, 00
+	;disparo
+	disparoFila1    db  12
+	disparoFila2    db  29
+	disparoFila3    db  29
+	disparoFila4    db  45
+	;coordenadas disparo
+	xdis            dw  0
+	ydis            dw  0
+	contador        dw  0
+	;tiempo
+	minutos         db  0
+	decminutos      db  0
+	uniminutos      db  0
+	segundos        db  0
+	decsegundos     db  0
+	unisegundos     db  0
+	micsegundos     db  0
+
 	; ================ SEGMENTO DE PROC ================
 	; **************************** [IDENTIFICADOR] **************************** 
 	identificador proc far
@@ -100,6 +132,42 @@ include File.asm
 	    GetPrint _salto
 	    ret
 	menu endp
+
+
+	GetChar proc far
+	;lee un caracter
+	    xor ah, ah
+	    int 16h
+	    ret
+	GetChar endp
+
+
+	limpiarpantallag proc
+	;vuelve a entrar en el modo video
+	    mov ah, 0
+	    mov al, 13h
+	    int 10h
+	    ret
+	limpiarpantallag endp
+
+	Delay proc far
+	;metodo para agregar un delay en microsegundos para refrescar la pantalla
+	;los microsegundos se toman como cx:dx
+	    mov cx, 0000h
+	    mov dx, 0fffffh
+	    mov ah, 86h
+	    int 15h
+	    ret
+	Delay endp
+
+	HasKey proc
+;verifica si se ha pulsado una tecla
+    push ax
+    mov ah, 01h
+    int 16h
+    pop ax
+    ret
+HasKey endp
 
 ; ================ SEGMENTO DE CODIGO ================
 .code 
@@ -142,7 +210,7 @@ include File.asm
 				GetPrint _false2
 				GetPrint _salto
 				je Loption1
-
+				GetPlay
 				jmp Lmenu
 
 
