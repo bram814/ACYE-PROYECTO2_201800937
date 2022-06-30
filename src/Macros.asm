@@ -476,8 +476,6 @@ dibujarnave macro
     add ax, 320
     auxdiblinea naveFila3, 11
     add ax, 320
-    auxdiblinea naveFila3, 11
-    add ax, 320
     auxdiblinea naveFila4, 11
     add ax, 320
     auxdiblinea naveFila5, 11
@@ -503,6 +501,26 @@ dibujarCarro0 macro
     add ax, 320
     auxdiblinea carro0Fila6, 11
 endm
+
+
+dibujarCarroN macro f1, f2, f3, f4, f5, f6
+    mov cx, 320
+    mul cx
+    add ax, bx
+    mov di, ax
+    auxdiblinea f1, 11
+    add ax, 320
+    auxdiblinea f2, 11
+    add ax, 320
+    auxdiblinea f3, 11
+    add ax, 320
+    auxdiblinea f4, 11
+    add ax, 320
+    auxdiblinea f5, 11
+    add ax, 320
+    auxdiblinea f6, 11
+endm
+
 
 
 
@@ -864,7 +882,7 @@ endm
 
 
 GetPlay macro 
-    local Pausa, inicioj, inicioj1, tiempo1, masseg, masmin, inicioj2, WaitNotVSync, WaitNotVSync2, WaitVSync, WaitVSync2, disparar, disparar1, moverizq, moverder, finj, salir
+    local LCarro0, LCarro1, LCarro2, LCarro3, LCarro4, LCarro5, LCarro6, LCarro7, LCarro8, LCarro9, LCarro10, LCarro11, LCarro12, LCarro13, LCarro14, LCarro15, LCarro16, LCarro17, Lmov, Pausa, inicioj, inicioj1, tiempo1, masseg, masmin, inicioj2, WaitNotVSync, WaitNotVSync2, WaitVSync, WaitVSync2, disparar, disparar1, moverizq, moverder, finj, salir
 
     xor si, si
     ;entra en modo grafico
@@ -876,11 +894,64 @@ GetPlay macro
     ;offset de la memoria de video importante
     mov ax, 0A000h
     mov es, ax
-    ;coordenadas donde empezara a dibujar la nave
+    ;coordenadas donde empezara a dibujar el carro
     mov xnave, 150
     mov ynave, 185
+    ; coordenadas donde empezara a dibujar el carroN
+    ; carro 0
     mov xcarro0, 52
     mov ycarro0, 23
+    ; carro 1
+    mov xcarro1, 65
+    mov ycarro1, 50
+    ; carro 2
+    mov xcarro2, 75
+    mov ycarro2, 35
+    ; carro 3
+    mov xcarro3, 95
+    mov ycarro3, 25
+    ; carro 4
+    mov xcarro4, 105
+    mov ycarro4, 60
+    ; carro 5
+    mov xcarro5, 115
+    mov ycarro5, 56
+    ; carro 6
+    mov xcarro6, 125
+    mov ycarro6, 85
+    ; carro 7
+    mov xcarro7, 135
+    mov ycarro7, 36
+    ; carro 8
+    mov xcarro8, 145
+    mov ycarro8, 56
+    ; carro 9
+    mov xcarro9, 155
+    mov ycarro9, 90
+    ; carro 10
+    mov xcarro10, 165
+    mov ycarro10, 100
+    ; carro 11
+    mov xcarro11, 175
+    mov ycarro11, 56
+    ; carro 12
+    mov xcarro12, 185
+    mov ycarro12, 90
+    ; carro 13
+    mov xcarro13, 195
+    mov ycarro13, 110
+    ; carro 14
+    mov xcarro14, 205
+    mov ycarro14, 50
+    ; carro 15
+    mov xcarro15, 215
+    mov ycarro15, 130
+    ; carro 16
+    mov xcarro16, 225
+    mov ycarro16, 80
+    ; carro 17
+    mov xcarro17, 235
+    mov ycarro17, 30
     ;set tiempo en 0
     mov segundos, 0
     mov minutos, 0
@@ -898,17 +969,145 @@ GetPlay macro
         imprimirnombre
         imprimirtiempo 
         imprimirPunteo
-        inc ycarro0
+        inc ycarro0 ; incre carro 0
+        inc ycarro1 ; incre carro 1
+        inc ycarro2 ; incre carro 2
+        inc ycarro3 ; incre carro 3
+        inc ycarro4 ; incre carro 4
+        inc ycarro5 ; incre carro 5
+        inc ycarro6 ; incre carro 6
+        inc ycarro7 ; incre carro 7
+        inc ycarro8 ; incre carro 8
+        inc ycarro9 ; incre carro 9
+        inc ycarro10 ; incre carro 10
+        inc ycarro11 ; incre carro 11
+        inc ycarro12 ; incre carro 12
+        inc ycarro13 ; incre carro 13
+        inc ycarro14 ; incre carro 14
+        inc ycarro15 ; incre carro 15
+        inc ycarro16 ; incre carro 16
+        inc ycarro17 ; incre carro 17
         mov ax, _PUNTEOI
         Int_String _PUNTEOS
         imprimirVideo _PUNTEOS, 28
-        cmp ycarro0, 185
-        je LincrePoint
-        jmp inicioj1
-        LincrePoint:
-            inc _PUNTEOI
-            mov ycarro0, 23
-            inc xcarro0
+
+        Lmov:
+            cmp ycarro0, 185   ; carro 0
+            je LCarro0
+            cmp ycarro1, 185   ; carro 1
+            je LCarro1
+            cmp ycarro2, 185   ; carro 2
+            je LCarro2
+            cmp ycarro3, 185   ; carro 3
+            je LCarro3
+            cmp ycarro4, 185   ; carro 4
+            je LCarro4
+            cmp ycarro5, 185   ; carro 5
+            je LCarro5
+            cmp ycarro6, 185   ; carro 6
+            je LCarro6
+            cmp ycarro7, 185   ; carro 7
+            je LCarro7
+            cmp ycarro8, 185   ; carro 8
+            je LCarro8
+            cmp ycarro9, 185   ; carro 9
+            je LCarro9
+            cmp ycarro10, 185   ; carro 10
+            je LCarro10
+            cmp ycarro11, 185   ; carro 11
+            je LCarro11
+            cmp ycarro12, 185   ; carro 12
+            je LCarro12
+            cmp ycarro13, 185   ; carro 13
+            je LCarro13
+            cmp ycarro14, 185   ; carro 14
+            je LCarro14
+            cmp ycarro15, 185   ; carro 15
+            je LCarro15
+            cmp ycarro16, 185   ; carro 16
+            je LCarro16
+            cmp ycarro17, 185   ; carro 17
+            je LCarro17
+
+            jmp inicioj1
+
+            LCarro0:
+                inc _PUNTEOI
+                mov ycarro0, 23
+                jmp Lmov
+            LCarro1:
+                inc _PUNTEOI
+                mov ycarro1, 23
+                jmp Lmov
+            LCarro2:
+                inc _PUNTEOI
+                mov ycarro2, 23
+                jmp Lmov
+            LCarro3:
+                inc _PUNTEOI
+                mov ycarro3, 23
+                jmp Lmov
+            LCarro4:
+                inc _PUNTEOI
+                mov ycarro4, 23
+                jmp Lmov
+            LCarro5:
+                inc _PUNTEOI
+                mov ycarro5, 23
+                jmp Lmov
+            LCarro6:
+                inc _PUNTEOI
+                mov ycarro6, 23
+                jmp Lmov
+            LCarro7:
+                inc _PUNTEOI
+                mov ycarro7, 23
+                jmp Lmov
+            LCarro8:
+                inc _PUNTEOI
+                mov ycarro8, 23
+                jmp Lmov
+            LCarro9:
+                inc _PUNTEOI
+                mov ycarro9, 23
+                jmp Lmov
+            LCarro10:
+                inc _PUNTEOI
+                mov ycarro10, 23
+                jmp Lmov
+            LCarro11:
+                inc _PUNTEOI
+                mov ycarro11, 23
+                jmp Lmov
+            LCarro12:
+                inc _PUNTEOI
+                mov ycarro12, 23
+                jmp Lmov
+            LCarro13:
+                inc _PUNTEOI
+                mov ycarro13, 23
+                jmp Lmov
+            LCarro14:
+                inc _PUNTEOI
+                mov ycarro14, 23
+                jmp Lmov
+            LCarro15:
+                inc _PUNTEOI
+                mov ycarro15, 23
+                jmp Lmov
+            LCarro16:
+                inc _PUNTEOI
+                mov ycarro16, 23
+                jmp Lmov
+            LCarro17:
+                inc _PUNTEOI
+                mov ycarro17, 23
+                jmp Lmov
+
+
+
+
+            jmp inicioj1
         
         ; imprimirPantalla 
     inicioj1:
@@ -943,9 +1142,78 @@ GetPlay macro
         mov ax, ynave ;coordenada y de la nave
         mov bx, xnave ; coordenada x de la nave
         dibujarnave
+        ; carro 0
         mov ax, ycarro0
         mov bx, xcarro0
         dibujarCarro0
+        ; carro 1
+        mov ax, ycarro1
+        mov bx, xcarro1
+        dibujarCarroN c1F1, c1F2, c1F3, c1F4, c1F5, c1F6
+        ; carro 2
+        mov ax, ycarro2
+        mov bx, xcarro2
+        dibujarCarroN c2F1, c2F2, c2F3, c2F4, c2F5, c2F6
+        ; carro 3
+        mov ax, ycarro3
+        mov bx, xcarro3
+        dibujarCarroN c3F1, c3F2, c3F3, c3F4, c3F5, c3F6
+        ; carro 4
+        mov ax, ycarro4
+        mov bx, xcarro4
+        dibujarCarroN c4F1, c4F2, c4F3, c4F4, c4F5, c4F6
+        ; carro 5
+        mov ax, ycarro5
+        mov bx, xcarro5
+        dibujarCarroN c5F1, c5F2, c5F3, c5F4, c5F5, c5F6
+        ; carro 6
+        mov ax, ycarro6
+        mov bx, xcarro6
+        dibujarCarroN c6F1, c6F2, c6F3, c6F4, c6F5, c6F6
+        ; carro 7
+        mov ax, ycarro7
+        mov bx, xcarro7
+        dibujarCarroN c7F1, c7F2, c7F3, c7F4, c7F5, c7F6
+        ; carro 8
+        mov ax, ycarro8
+        mov bx, xcarro8
+        dibujarCarroN c8F1, c8F2, c8F3, c8F4, c8F5, c8F6
+        ; carro 9
+        mov ax, ycarro9
+        mov bx, xcarro9
+        dibujarCarroN c9F1, c9F2, c9F3, c9F4, c9F5, c9F6
+        ; carro 10
+        mov ax, ycarro10
+        mov bx, xcarro10
+        dibujarCarroN c10F1, c10F2, c10F3, c10F4, c10F5, c10F6
+        ; carro 11
+        mov ax, ycarro11
+        mov bx, xcarro11
+        dibujarCarroN c11F1, c11F2, c11F3, c11F4, c11F5, c11F6
+        ; carro 12
+        mov ax, ycarro12
+        mov bx, xcarro12
+        dibujarCarroN c12F1, c12F2, c12F3, c12F4, c12F5, c12F6
+        ; carro 13
+        mov ax, ycarro13
+        mov bx, xcarro13
+        dibujarCarroN c13F1, c13F2, c13F3, c13F4, c13F5, c13F6
+        ; carro 14
+        mov ax, ycarro14
+        mov bx, xcarro14
+        dibujarCarroN c14F1, c14F2, c14F3, c14F4, c14F5, c14F6
+        ; carro 15
+        mov ax, ycarro15
+        mov bx, xcarro15
+        dibujarCarroN c1F1, c1F2, c1F3, c1F4, c1F5, c1F6
+        ; carro 16
+        mov ax, ycarro16
+        mov bx, xcarro16
+        dibujarCarroN c2F1, c2F2, c2F3, c2F4, c2F5, c2F6
+        ; carro 17
+        mov ax, ycarro17
+        mov bx, xcarro17
+        dibujarCarroN c6F1, c6F2, c6F3, c6F4, c6F5, c6F6
         ;se sacan los valores de ax y bx
         pop bx
         pop ax
