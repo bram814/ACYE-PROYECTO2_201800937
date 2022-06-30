@@ -80,19 +80,29 @@ include File.asm
 	; *********************** [VISTA DE JUEGO] ********************************
 	spv db " ","$"
 	_Pausa db " PAUSA $"
+	_PUNTEO db "Punteo: $"
 	;coordenadas nave
 	xnave           dw  0
 	ynave           dw  0
+	xcarro0         dw  0
+	ycarro0         dw  0
 	;marco
 	lineamarco      db  24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 
 	lineamarco1     db  24, 24
-	;nave
-	naveFila1       db  00, 00, 09, 09, 11, 11, 11, 09, 09, 00, 00
-	naveFila2       db  00, 00, 09, 09, 11, 11, 11, 09, 09, 00, 00
+	; CARRO
+	naveFila1       db  00, 00, 09, 09, 14, 14, 14, 09, 09, 00, 00
+	naveFila2       db  00, 00, 09, 09, 10, 10, 10, 09, 09, 00, 00
 	naveFila3       db  00, 00, 00, 00, 10, 10, 10, 00, 00, 00, 00
 	naveFila4       db  00, 00, 00, 00, 10, 10, 10, 00, 00, 00, 00
-	naveFila5       db  00, 00, 09, 09, 11, 11, 11, 09, 09, 00, 00
-	naveFila6       db  00, 00, 09, 09, 11, 11, 11, 09, 09, 00, 00
+	naveFila5       db  00, 00, 09, 09, 10, 10, 10, 09, 09, 00, 00
+	naveFila6       db  00, 00, 09, 09, 39, 10, 39, 09, 09, 00, 00
+	; carro random
+	carro0Fila1     db  00, 00, 15, 15, 39, 39, 39, 15, 15, 00, 00
+	carro0Fila2     db  00, 00, 15, 15, 39, 39, 39, 15, 15, 00, 00
+	carro0Fila3     db  00, 00, 00, 00, 39, 39, 39, 00, 00, 00, 00
+	carro0Fila4     db  00, 00, 00, 00, 39, 39, 39, 00, 00, 00, 00
+	carro0Fila5     db  00, 00, 15, 15, 39, 39, 39, 15, 15, 00, 00
+	carro0Fila6     db  00, 00, 15, 15, 14, 14, 14, 15, 15, 00, 00
 	;disparo
 	disparoFila1    db  12
 	disparoFila2    db  29

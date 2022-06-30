@@ -395,6 +395,25 @@ dibujarnave macro
 endm
 
 
+dibujarCarro0 macro
+    mov cx, 320
+    mul cx
+    add ax, bx
+    mov di, ax
+    auxdiblinea carro0Fila1, 11
+    add ax, 320
+    auxdiblinea carro0Fila2, 11
+    add ax, 320
+    auxdiblinea carro0Fila3, 11
+    add ax, 320
+    auxdiblinea carro0Fila4, 11
+    add ax, 320
+    auxdiblinea carro0Fila5, 11
+    add ax, 320
+    auxdiblinea carro0Fila6, 11
+endm
+
+
 
 dibujardis macro
 ;macro para dibujar el disparo por primera vez
@@ -459,9 +478,26 @@ imprimirnombre macro
     e2:
 endm
 
+imprimirPunteo macro
+    local e1, e2
+    mov dl, 20
+    e1:
+    ;posicion del cursor
+        mov ah, 02h
+        ;dh fila
+        mov dh, 0
+        ;dl columna
+        mov dl, dl
+        int 10h
+        mov dx, offset _PUNTEO
+        mov ah, 09h
+        int 21h
+    e2:
+endm
+
 imprimirPausa macro
     local e1, e2
-    mov dl, 0
+    mov dl, 10
     e1:
     ;posicion del cursor
         mov ah, 02h
@@ -735,6 +771,8 @@ GetPlay macro
     ;coordenadas donde empezara a dibujar la nave
     mov xnave, 150
     mov ynave, 185
+    mov xcarro0, 52
+    mov ycarro0, 23
     ;set tiempo en 0
     mov segundos, 0
     mov minutos, 0
@@ -749,6 +787,7 @@ GetPlay macro
         push bx
         imprimirnombre
         imprimirtiempo 
+        imprimirPunteo
         ; imprimirPantalla 
     inicioj1:
         mov ax, 20 ;y
@@ -777,10 +816,15 @@ GetPlay macro
             mov al, 0
             mov segundos, al
             mov micsegundos, al
+
     inicioj2:
+        inc ycarro0
         mov ax, ynave ;coordenada y de la nave
         mov bx, xnave ; coordenada x de la nave
         dibujarnave
+        mov ax, ycarro0
+        mov bx, xcarro0
+        dibujarCarro0
         mov ax, ydis ; coordenada y del disparo
         mov bx, xdis ; coordenada x del disparo
         redibujardis ; manda a llamar la macro para redibujar el disparo
@@ -823,8 +867,6 @@ GetPlay macro
         call GetChar;verifica la tecla que pulso
         cmp al,1bh          ; escape
         je Pausa
-        cmp al, 20h;tecla de espacio
-        je finj
         cmp ax, 4b00h;flecha de la izquierda
         je moverizq
         cmp ax, 4d00h;flecha de la derecha
@@ -870,6 +912,7 @@ GetPlay macro
         imprimirnombre
         imprimirtiempo
         imprimirPausa
+        imprimirPunteo
         call GetChar;verifica la tecla que pulso
         cmp al,1bh          ; escape
         je inicioj
@@ -888,3 +931,4 @@ GetPlay macro
         
 
 endm
+
